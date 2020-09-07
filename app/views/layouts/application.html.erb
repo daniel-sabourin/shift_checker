@@ -5,11 +5,25 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'application' %>
+    <%= stylesheet_pack_tag 'application' %>
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   </head>
 
   <body>
-    <%= yield %>
+    <div class="navbar-fixed">
+      <nav>
+        <div class="nav-wrapper">
+          <div class='row'>
+            <div class="col s12"><a href="#!" class="brand-logo">Shift Checker</a></div>
+          </div>
+        </div>
+      </nav>
+    </div>
+
+    <div class='container'>
+      <%= yield %>
+    </div>
   </body>
 </html>

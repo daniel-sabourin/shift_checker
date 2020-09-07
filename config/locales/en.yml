@@ -30,4 +30,25 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  date:
+    formats:
+      default: '%a %b %d, %Y'
+  shifts:
+    index:
+      shift:
+        count: "You have %{count} shifts between %{start_date} and %{end_date}"
+        title: "Shift #%{index}"
+      holiday:
+        count: "You are working %{working_count} holidays, and not working %{not_working_count}."
+        emoji:
+          labour-day: 🛠
+          thanksgiving: 🦃
+          remembrance-day: 🌺
+          christmas-day: 🎄
+          new-year-s-day: 🎆
+          family-day: 👨‍👩‍👧‍👦
+          good-friday: 🐰
+          victoria-day: 👸
+          canada-day: 🇨🇦
+          heritage-day: 🏛️
+          default: 📅

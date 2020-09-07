@@ -1,0 +1,115 @@
+<br>
+
+<ul class="collapsible expandable popout">
+  <li class='active'>
+    <div class="collapsible-header"><i class="material-icons">tune</i>Configuration</div>
+    <div class="collapsible-body">
+      <%= form_with method: :get, local: true do |form| %>
+        <div class="row">
+          <div class="input-field col s6 m3">
+            <%= form.label :start_date %>
+            <%= form.text_field :start_date, value: @start_date, class: 'datepicker' %>
+          </div>
+          <div class="input-field col s6 m3">
+            <%= form.label :end_date %>
+            <%= form.text_field :end_date, value: @end_date, class: 'datepicker' %>
+          </div>
+
+          <div class="input-field col s6 m3">
+            <%= form.label :days_on %>
+            <%= form.number_field :days_on, value: @days_on %>
+          </div>
+
+          <div class="input-field col s6 m3">
+            <%= form.label :days_off %>
+            <%= form.number_field :days_off, value: @days_off %>
+          </div>
+        </div>
+
+        <%= form.submit :update, class: "waves-effect waves-light btn white-text" %>
+      <% end %>
+    </div>
+  </li>
+  <li>
+    <div class="collapsible-header"><i class="material-icons">assignment_ind</i>Shifts</div>
+    <div class="collapsible-body">
+      <h5>
+        <%= t('.shift.count', count: @shifts.count, start_date: l(@start_date), end_date: l(@end_date)) %>
+      </h5>
+
+      <div class="row">
+        <% @shifts.each_with_index do |shift, index| %>
+          <% weekends = shift.select(&:on_weekend?).count %>
+          <%
+            colour = case weekends
+              when 0 then 'green darken-2'
+              when 1 then 'red darken-1'
+              when 2 then 'red darken-4'
+              else 'red darken-4'
+              end
+          %>
+          <div class="col s12 m4 l3">
+            <div class="card <%= colour %>">
+              <div class="card-content white-text">
+                <span class="card-title">
+                  <%= t('.shift.title', index: index + 1) %>
+                </span>
+
+                <div class='valign-wrapper'><i class="material-icons ">play_arrow</i>&nbsp;&nbsp;<%= l(shift.begin) %></div>
+                <div class='valign-wrapper'><i class="material-icons ">stop</i>&nbsp;&nbsp;<%= l(shift.end) %></div>
+                <div class='valign-wrapper'><i class="material-icons ">weekend</i>&nbsp;&nbsp;<%= weekends %></div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </li>
+  <li>
+    <div class="collapsible-header"><i class="material-icons">event_available</i>Holidays</div>
+    <div class="collapsible-body">
+      <h5>
+        <%= t('.holiday.count', working_count: @shift_holidays.count, not_working_count: @unshift_holidays.count) %>
+      </h5>
+
+      <div class="row">
+        <% @holidays.each do |holiday| %>
+            <% colour = @shift_holidays.include?(holiday) ? "red" : "green" %>
+
+            <div class="col s12 l6">
+              <div class="card <%= colour %> darken-4">
+                <div class="card-content white-text">
+                  <span class="card-title">
+                    <%= t(".holiday.emoji.#{holiday[:name].parameterize}", default: t(".holiday.emoji.default")) %>
+                    <%= holiday[:name] %>
+                  </span>
+
+                  <div class='valign-wrapper'><i class="material-icons">perm_contact_calendar</i>&nbsp;&nbsp;<%= l(holiday[:date]) %></div>
+                  <div class='valign-wrapper'><i class="material-icons ">work</i>&nbsp;&nbsp;<%= @shift_holidays.include?(holiday) ? t(".holiday.working") : t(".holiday.not_working") %></div>
+                </div>
+              </div>
+            </div>
+        <% end %>
+      </div>
+    </div>
+  </li>
+</ul>
+
+<%= javascript_tag do %>
+  document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.datepicker');
+    var options = {
+      autoClose: true,
+      format: "yyyy-mm-dd"
+    }
+    var instances = M.Datepicker.init(elems, options);
+  });
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.collapsible');
+    var options = {
+      accordion: false
+    }
+    var instances = M.Collapsible.init(elems, options);
+  });
+<% end %>
